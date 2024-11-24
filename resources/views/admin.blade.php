@@ -2,6 +2,6 @@
 
 @section('content')
 <section>
-    <p>classical</p>
+    <p>admin</p>
 </section>
 @endsection

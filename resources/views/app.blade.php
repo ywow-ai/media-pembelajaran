@@ -41,21 +41,49 @@
     <title>{{ isset($title) ? "MEDIA PEMBELAJARAN | $title" : 'MEDIA PEMBELAJARAN' }}</title>
     <link rel="stylesheet" href="{{ asset('bootstrap.css') }}">
     <link rel="stylesheet" href="{{ asset('bootstrap-icons.min.css') }}">
+    <style>
+        .x-none {
+            border: 0 !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .x-nav {
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .x-card {
+            border: 0 !important;
+            box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .x-radio {
+            box-shadow: none !important;
+            width: 25px;
+            height: 25px;
+            margin-bottom: 4px;
+        }
+
+        .x-check {
+            box-shadow: none !important;
+            border: none !important;
+        }
+    </style>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg bg-white fixed-top x-nav">
         <div class="container-fluid">
             <div class="d-flex w-100">
                 <div class="d-flex">
-                    <button class="navbar-toggler d-block d-lg-none" type="button" data-bs-toggle="offcanvas"
+                    <button class="navbar-toggler d-block d-lg-none x-none" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasLeft" aria-controls="offcanvasLeft" aria-expanded="false"
                         aria-label="Toggle Canvas">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <a class="navbar-brand navbar-logo d-flex justify-content-center align-items-center" href="#">
-                        <img src="https://via.placeholder.com/35x35.png?text=Logo" alt="Logo">
-                        <span class="ms-2">MEDIA PEMBELAJARAN</span>
+                        <img src="https://via.placeholder.com/35x35.png?text=Logo" alt="Logo" class="ms-2 ms-lg-0">
+                        <span class="ms-2 d-none d-lg-block">MEDIA PEMBELAJARAN</span>
                     </a>
                 </div>
                 <div class="d-none d-lg-flex ms-auto d-flex justify-content-center align-items-center">
@@ -69,14 +97,14 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         @foreach ($item->child as $sub)
-                                            <li><a class="dropdown-item"
+                                            <li><a class="dropdown-item py-2"
                                                     href="{{ $sub->route }}">{{ __($sub->name) }}</a></li>
                                         @endforeach
                                     </ul>
                                 </li>
                             @else
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="{{ $item->route }}">{{ __($item->name) }}</a>
+                                    <a class="nav-link" href="{{ $item->route }}">{{ __($item->name) }}</a>
                                 </li>
                             @endif
                         @endforeach
@@ -98,7 +126,8 @@
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasLeft" aria-labelledby="offcanvasLeftLabel">
         <div class="offcanvas-header">
             <h5 id="offcanvasLeftLabel">Menu</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close text-reset x-none" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
             <ul class="navbar-nav">
@@ -136,6 +165,7 @@
         @yield('content')
     </div>
     <script src="{{ asset('bootstrap.js') }}"></script>
+    <script src="{{ asset('jquery.min.js') }}"></script>
 </body>
 
 </html>
