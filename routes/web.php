@@ -12,5 +12,6 @@ Route::prefix('pembelajaran')
         Route::get('/classical', [PembelajaranController::class, 'classical'])->name('classical');
         Route::get('/kelompok', [PembelajaranController::class, 'kelompok'])->name('kelompok');
         Route::get('/mandiri', [PembelajaranController::class, 'mandiri'])->name('mandiri');
+        Route::get('/partial/{part}', [PembelajaranController::class, 'partial'])->name('partial');
     })
     ->name('pembelajaran');

@@ -166,6 +166,8 @@
     </div>
     <script src="{{ asset('bootstrap.js') }}"></script>
     <script src="{{ asset('jquery.min.js') }}"></script>
+
+    @yield('js')
 </body>
 
 </html>

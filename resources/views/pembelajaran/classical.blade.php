@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 col-lg-10 mx-auto">
-            <div class="row p-2">
+        <div class="col-12 col-lg-10 mx-auto" id="wrapper-main">
+            {{-- <div class="row p-2">
                 <div class="col-12 col-lg-8 p-2">
                     <div class="card x-card position-relative" style="min-height: 70vh;">
                         <div class="card-body d-flex flex-column justify-content-between">
@@ -36,7 +36,8 @@
                             </div>
                             <div class="form-inline d-flex justify-content-between">
                                 <button type="button" class="btn btn-primary text-white">Sebelumnya</button>
-                                <label for="check-ragu-ragu" class="btn btn-warning text-white d-flex align-items-center" role="button">
+                                <label for="check-ragu-ragu" class="btn btn-warning text-white d-flex align-items-center"
+                                    role="button">
                                     <input type="checkbox" class="form-check-input x-check m-0" id="check-ragu-ragu">
                                     <span class="ms-2">Ragu-ragu</span>
                                 </label>
@@ -72,7 +73,44 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(async () => {
+            const prefix = 'classical';
+            const checks = [
+                async () => {
+                    try {
+                        const storage_name = `${prefix}_nama`;
+                        const nama = localStorage.getItem(storage_name);
+                        if (nama === null || nama === undefined || nama === '') {
+                            const response = await fetch('/pembelajaran/partial/input_nama');
+                            if (!response.ok) {
+                                throw response;
+                            }
+                            $('#wrapper-main').html(await response.text());
+                        }
+                        return {
+                            key: 'nama',
+                            value: nama
+                        };
+                    } catch (e) {
+                        return {
+                            key: 'nama',
+                            value: null,
+                            e,
+                        };
+                    }
+                },
+            ];
+
+            $(document).on('click', '#submit-nama', () => {
+                await Promise.all(checks.map(prom => prom()));
+            });
+        });
+    </script>
 @endsection

@@ -183,4 +183,12 @@ class PembelajaranController extends Controller
         return view('pembelajaran.mandiri')->with('title', 'MANDIRI');
     }
 
+    public function partial(string $part)
+    {
+        try {
+            return response()->view("pembelajaran.partial.{$part}");
+        } catch (\Throwable $th) {
+            return response($th->getMessage(), 500);
+        }
+    }
 }
