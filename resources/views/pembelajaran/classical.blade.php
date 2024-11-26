@@ -2,115 +2,153 @@
 
 @section('content')
     <div class="row">
-        <div class="col-12 col-lg-10 mx-auto" id="wrapper-main">
-            {{-- <div class="row p-2">
-                <div class="col-12 col-lg-8 p-2">
-                    <div class="card x-card position-relative" style="min-height: 70vh;">
-                        <div class="card-body d-flex flex-column justify-content-between">
-                            <div>
-                                <div class="d-flex align-items-center">
-                                    <span class="h5 text-primary m-0 me-2">SOAL NO</span>
-                                    <span class="d-inline-block bg-primary text-white rounded-circle text-center fw-bold"
-                                        style="width: 35px; height: 35px; line-height: 35px;">
-                                        1
-                                    </span>
-                                </div>
-                                <div class="mt-4">
-                                    <p class="fw-bold">{!! $soal[0]->soal !!}</p>
-                                    <ul class="list-unstyled">
-                                        @foreach ($soal[0]->options as $key => $ops)
-                                            <li class="mb-2">
-                                                <div class="form-check">
-                                                    <label for="soal1-p{{ $key }}"
-                                                        class="form-check-label w-100 p-2 d-flex align-items-center"
-                                                        style="cursor: pointer">
-                                                        <input type="radio" name="soal1" id="soal1-p{{ $key }}"
-                                                            class="form-check-input x-radio me-2">
-                                                        {{ $ops }}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="form-inline d-flex justify-content-between">
-                                <button type="button" class="btn btn-primary text-white">Sebelumnya</button>
-                                <label for="check-ragu-ragu" class="btn btn-warning text-white d-flex align-items-center"
-                                    role="button">
-                                    <input type="checkbox" class="form-check-input x-check m-0" id="check-ragu-ragu">
-                                    <span class="ms-2">Ragu-ragu</span>
-                                </label>
-                                <button type="button" class="btn btn-primary text-white">Selanjutnya</button>
-                            </div>
-                        </div>
-
-                        <div class="w-100 h-100 position-absolute d-none"
-                            style="border-radius: inherit; background-color: rgba(0, 0, 0, 0.5);" data-x-loading>
-                            <div class="d-flex justify-content-center align-items-center h-100">
-                                <div class="spinner-border text-light" role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-4 p-2">
-                    <div class="card x-card">
-                        <div class="card-body px-4">
-                            <span class="h5 text-primary">Navigasi Soal</span>
-                            <div class="mb-4"></div>
-                            <div class="row">
-                                @foreach ($soal as $i => $item)
-                                    <div class="col-3 p-2">
-                                        <div class="w-100">
-                                            <button type="button"
-                                                class="btn btn-secondary w-100">{{ sprintf('%02d', $i + 1) }}</button>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
-        </div>
+        <div class="col-12 col-lg-10 mx-auto" id="wrapper-main"></div>
     </div>
 @endsection
 
 @section('js')
     <script>
-        $(document).ready(async () => {
-            const prefix = 'classical';
-            const checks = [
-                async () => {
-                    try {
-                        const storage_name = `${prefix}_nama`;
-                        const nama = localStorage.getItem(storage_name);
-                        if (nama === null || nama === undefined || nama === '') {
-                            const response = await fetch('/pembelajaran/partial/input_nama');
-                            if (!response.ok) {
-                                throw response;
-                            }
-                            $('#wrapper-main').html(await response.text());
-                        }
-                        return {
-                            key: 'nama',
-                            value: nama
-                        };
-                    } catch (e) {
-                        return {
-                            key: 'nama',
-                            value: null,
-                            e,
-                        };
-                    }
-                },
-            ];
+        $(document)
+            .ready(() => {
+                const soals = @json($soal);
+                class Main {
+                    storage_nama = 'classical_nama';
+                    storage_video = 'classical_video';
+                    storage_soal = 'classical_soal';
+                    storage_soal_current = 'classical_soal_current';
+                    storage_soal_answers = 'classical_soal_answers';
+                    wrapper = $('#wrapper-main');
 
-            $(document).on('click', '#submit-nama', () => {
-                await Promise.all(checks.map(prom => prom()));
+                    nama() {
+                        const nama = localStorage.getItem(this.storage_nama);
+                        if (['', null, undefined, false].includes(nama)) {
+                            (async () => {
+                                try {
+                                    const res = await fetch('/pembelajaran/partial/input_nama');
+                                    if (!res.ok) {
+                                        throw res;
+                                    }
+                                    this.wrapper.html(await res.text());
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            })();
+
+                            return null;
+                        } else {
+                            return nama;
+                        }
+                    }
+
+                    video() {
+                        const video = localStorage.getItem(this.storage_video);
+                        if (['', null, undefined, false].includes(video)) {
+                            (async () => {
+                                try {
+                                    const res = await fetch('/pembelajaran/partial/video');
+                                    if (!res.ok) {
+                                        throw res;
+                                    }
+                                    this.wrapper.html(await res.text());
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            })();
+
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
+                    soal() {
+                        const soal = localStorage.getItem(this.storage_soal);
+                        if (['', null, undefined, false].includes(soal)) {
+                            (async () => {
+                                try {
+                                    const res = await fetch('/pembelajaran/partial/soal');
+                                    if (!res.ok) {
+                                        throw res;
+                                    }
+                                    const current = localStorage.getItem(this.storage_soal_current) ?? '0';
+                                    const current_saved_soal = (() => {
+                                        try {
+                                            return JSON.parse(localStorage.getItem(this.storage_soal_answers)) ?? {};
+                                        } catch (error) {
+                                            return {};
+                                        }
+                                    })()[current];
+                                    const soal = soals[current];
+                                    console.log(soal);
+                                    const htmls = $(await res.text());
+                                    htmls.find('#soal-num-head').text((Number(current) + 1).toString().padStart(2, '0'));
+                                    htmls.find('#soal-value').html(soal.soal);
+                                    htmls.find('#answers').html(soal.type === 'esay' ? $('<textarea>', {name: 'optx', class: 'form-control'}) : $('<ul>', {class: 'list-unstyled'}).html(soal.options.map((o, i) => $('<li>', {class: 'mb-2'}).html($('<div>', {class: 'form-check'}).html($('<label>', {for: `opsx-${i}`, class: 'form-check-label w-100 p-2 d-flex align-items-center', style: 'cursor: pointer;'}).html([$('<input>', {checked: i === current_saved_soal.v, name: 'optx', type: 'radio', id: `opsx-${i}`, class: 'form-check-input x-radio me-2'}), $('<span>').text(o)]))))));
+                                    this.wrapper.html(htmls);
+                                } catch (error) {
+                                    console.log(error);
+                                }
+                            })();
+
+                            return false;
+                        } else {
+                            return true;
+                        }
+                    }
+
+                    soalAnswer(index) {
+                        const current = localStorage.getItem(this.storage_soal_current) ?? '0';
+                        const prev_soal = (() => {
+                            try {
+                                return JSON.parse(localStorage.getItem(this.storage_soal_answers)) ?? {};
+                            } catch (error) {
+                                return {};
+                            }
+                        })();
+
+                        localStorage.setItem(this.storage_soal_answers, JSON.stringify({
+                            ...prev_soal,
+                            [current]: {
+                                v: index,
+                                r: $('#check-ragu-ragu').is(':checked'),
+                            }
+                        }));
+                    }
+
+                    soalNavigate(index) {
+                        localStorage.setItem(this.storage_soal_current, Number(index));
+                    }
+
+                    soalRagu(index) {}
+
+                    soalFinish() {}
+
+                    check() {
+                        if (!this.nama()) {
+                            return;
+                        }
+                        if (!this.video()) {
+                            return;
+                        }
+                        if (!this.soal()) {
+                            return;
+                        }
+                    }
+                }
+
+                const main = new Main();
+
+                main.check();
+
+                $(document).on('click', '#submit-nama', () => {
+                    localStorage.setItem(main.storage_nama, $('#input-nama').val());
+                    main.check();
+                });
+
+                $(document).on('click', '#submit-video', () => {
+                    localStorage.setItem(main.storage_video, true);
+                    main.check();
+                });
             });
-        });
     </script>
 @endsection
