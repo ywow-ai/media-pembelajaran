@@ -14,8 +14,11 @@
                                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
                             <div class="form-inline d-flex justify-content-end mt-4">
-                                <button id="submit-video" type="button"
-                                    class="btn btn-primary text-white">Selanjutnya</button>
+                                <form action="{{ route('pembelajaran.classical_navigate') }}" method="post">
+                                    @csrf
+                                    <button type="submit" name="check_video" value="true"
+                                        class="btn btn-primary text-white">Selanjutnya</button>
+                                </form>
                             </div>
                         </div>
                     </div>

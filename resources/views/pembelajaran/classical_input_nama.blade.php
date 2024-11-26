@@ -7,12 +7,16 @@
                 <div class="col-12 col-lg-8 p-2 mx-auto">
                     <div class="card x-card">
                         <div class="card-body">
-                            <div class="form-group">
-                                <input class="form-control form-control-lg mb-4" type="text" placeholder="ketikan nama">
-                            </div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-primary w-100">Selanjutnya</button>
-                            </div>
+                            <form action="{{ route('pembelajaran.classical_navigate') }}" method="post">
+                                @csrf
+                                <div class="form-group">
+                                    <input class="form-control form-control-lg mb-4" type="text"
+                                        placeholder="ketikan nama" name="input_nama">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary w-100">Selanjutnya</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

@@ -11,15 +11,15 @@
             'child' => [
                 (object) [
                     'name' => 'CLASSICAL',
-                    'route' => route('classical'),
+                    'route' => route('pembelajaran.classical'),
                 ],
                 (object) [
                     'name' => 'KELOMPOK',
-                    'route' => route('kelompok'),
+                    'route' => route('pembelajaran.kelompok'),
                 ],
                 (object) [
                     'name' => 'MANDIRI',
-                    'route' => route('mandiri'),
+                    'route' => route('pembelajaran.mandiri'),
                 ],
             ],
         ],
