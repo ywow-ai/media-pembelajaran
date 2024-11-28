@@ -1,1 +1,0 @@
-/opt/homebrew/Cellar/php/8.4.1/bin/php artisan serve --port=8008

@@ -32,13 +32,38 @@ class PembelajaranController extends Controller
                 'b.ragu_ragu',
             )
             ->get()
-            ->map(function ($item, $key) {
+            ->map(function ($item, $key) use ($current) {
                 $item->options = json_decode($item->options, true);
-                $item->key = $key + 1;
+                $item->key = $key;
+                $item->classes = join(' ', [
+                    'btn w-100 border border-2 soal-navigate-to',
+                    (int) $item->ragu_ragu === 1
+                    ? ( /* kuning */
+                        (int) $current === $item->id
+                        ? 'btn-white text-warning border-warning'
+                        : 'btn-warning text-white border-warning'
+                    )
+                    : (
+                        $item->jawaban === null
+                        ? ( /* abu abu */
+                            (int) $current === $item->id
+                            ? 'btn-white text-secondary border-secondary'
+                            : 'btn-secondary text-white border-secondary'
+                        )
+                        : ( /* biru */
+                            (int) $current === $item->id
+                            ? 'btn-white text-primary border-primary'
+                            : 'btn-primary text-white border-primary'
+                        )
+                    ),
+                ]);
                 return $item;
             });
-        $current_soal = $soal->where('id', $current)->first();
-        // dd($current_soal);
+
+        $current_soal = $soal
+            ->filter(fn($f) => !isset ($current) || (int) $f->id === (int) $current)
+            ->first();
+
         $has_next = $soal->get(isset($current_soal) ? $current_soal->key + 1 : -1);
         $has_prev = $soal->get(isset($current_soal) ? $current_soal->key - 2 : -1);
         return view('pembelajaran.classical', compact('soal', 'current', 'current_soal', 'has_next', 'has_prev', 'nama'))->with('title', 'CLASSICAL');
@@ -62,6 +87,21 @@ class PembelajaranController extends Controller
             Cookie::queue('classical_navigate', $request->navigate, 60);
         }
 
+        if (isset($request->answer) || isset($request->ragu_ragu)) {
+            $data = [
+                'nama' => Cookie::get('classical_nama'),
+                'soal_id' => $request->this_soal_id,
+                'jawaban' => $request->answer,
+                'ragu_ragu' => isset($request->ragu_ragu) && $request->ragu_ragu === 'on',
+            ];
+            DB::table('jawaban')
+                ->upsert(
+                    $data,
+                    ['nama', 'soal_id'],
+                    ['jawaban', 'ragu_ragu'],
+                );
+        }
+
         return redirect()->back();
     }
 
@@ -69,7 +109,6 @@ class PembelajaranController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'nama' => 'required|string|max:255',
                 'soal_id' => 'required|int',
                 'jawaban' => 'required|string',
                 'ragu_ragu' => 'required|boolean',
@@ -89,7 +128,7 @@ class PembelajaranController extends Controller
 
             DB::table('jawaban')->upsert(
                 [
-                    'nama' => $request->nama,
+                    'nama' => Cookie::get('classical_nama'),
                     'soal_id' => $request->soal_id,
                     'jawaban' => $request->jawaban,
                     'ragu_ragu' => $request->ragu_ragu,
@@ -112,14 +151,5 @@ class PembelajaranController extends Controller
     public function mandiri()
     {
         return view('pembelajaran.mandiri')->with('title', 'MANDIRI');
-    }
-
-    public function partial(string $part)
-    {
-        try {
-            return response()->view("pembelajaran.partial.{$part}");
-        } catch (\Throwable $th) {
-            return response($th->getMessage(), 500);
-        }
     }
 }
