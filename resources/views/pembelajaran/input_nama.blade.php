@@ -7,7 +7,7 @@
                 <div class="col-12 col-lg-8 p-2 mx-auto">
                     <div class="card x-card">
                         <div class="card-body">
-                            <form action="{{ route('pembelajaran.classical_navigate') }}" method="post">
+                            <form action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}" method="post">
                                 @csrf
                                 <div class="form-group">
                                     <input class="form-control form-control-lg mb-4" type="text"

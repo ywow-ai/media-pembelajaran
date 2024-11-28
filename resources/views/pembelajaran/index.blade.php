@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-lg-10 mx-auto">
-            <form class="row p-2" action="{{ route('pembelajaran.classical_navigate') }}" method="post">
+            <form class="row p-2" action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}" method="post">
                 @csrf
                 <input type="hidden" name="this_soal_id" value="{{ $current_soal->id }}">
                 <div class="col-12 col-lg-8 p-2">
@@ -116,7 +116,7 @@
                     cancelAutoSave();
 
                     processedAutoSave = setTimeout(async () => {
-                        await fetch('/pembelajaran/classical_save', {
+                        await fetch(`/pembelajaran/${@json($kategori)}/save`, {
                             method: 'post',
                             headers: {
                                 'X-CSRF-TOKEN': token,
@@ -156,6 +156,19 @@
                 $('button[name="navigate"][type="submit"]')
                     .on('click', () => {
                         cancelAutoSave()
+                    });
+
+                $('button[type="submit"][name="finish"]')
+                    .on('click', e => {
+                        e.preventDefault();
+                        if (confirm('Selesai ujian?')) {
+                            $(e.currentTarget).closest('form[method="post"]').append($(
+                                '<input>', {
+                                    name: 'finish',
+                                    value: true,
+                                }));
+                            $(e.currentTarget).closest('form[method="post"]').submit();
+                        }
                     });
             });
     </script>

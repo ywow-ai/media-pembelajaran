@@ -11,15 +11,15 @@
             'child' => [
                 (object) [
                     'name' => 'CLASSICAL',
-                    'route' => route('pembelajaran.classical'),
+                    'route' => '/pembelajaran/classical',
                 ],
                 (object) [
                     'name' => 'KELOMPOK',
-                    'route' => route('pembelajaran.kelompok'),
+                    'route' => '/pembelajaran/kelompok',
                 ],
                 (object) [
                     'name' => 'MANDIRI',
-                    'route' => route('pembelajaran.mandiri'),
+                    'route' => '/pembelajaran/mandiri',
                 ],
             ],
         ],
@@ -81,7 +81,8 @@
                         aria-label="Toggle Canvas">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <a class="navbar-brand navbar-logo d-flex justify-content-center align-items-center" href="#">
+                    <a class="navbar-brand navbar-logo d-flex justify-content-center align-items-center"
+                        href="{{ route('index') }}">
                         <img src="https://via.placeholder.com/35x35.png?text=Logo" alt="Logo" class="ms-2 ms-lg-0">
                         <span class="ms-2 d-none d-lg-block">MEDIA PEMBELAJARAN</span>
                     </a>

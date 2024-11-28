@@ -14,7 +14,8 @@
                                 referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
                             <div class="form-inline d-flex justify-content-end mt-4">
-                                <form action="{{ route('pembelajaran.classical_navigate') }}" method="post">
+                                <form action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}"
+                                    method="post">
                                     @csrf
                                     <button type="submit" name="check_video" value="true"
                                         class="btn btn-primary text-white">Selanjutnya</button>
