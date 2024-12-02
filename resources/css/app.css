@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+    font-family: 'AdigianaToybox';
+         url('/fonts/AdigianaToybox.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    
+}
+span {
+    font-family: 'AdigianaToybox', sans-serif;
+}

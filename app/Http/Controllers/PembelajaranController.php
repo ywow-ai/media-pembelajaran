@@ -25,7 +25,7 @@ class PembelajaranController extends Controller
             "classical" => "https://www.youtube.com/embed/EhnlVO9zArU?si=wPxth_eEjOs4EBkG",
             "kelompok" => "https://www.youtube.com/embed/hpiUU-wSsAY?si=NjJljUHsH2y4JaPo",
             "mandiri" => "https://www.youtube.com/embed/esQeE59kj7U?si=2GsMviQLAMB3cWwz",
-        ][$kategori];
+        ][$kategori] ?? "";
 
         $finish = Cookie::get("{$kategori}_finish");
         if ($finish !== null) {
@@ -38,7 +38,7 @@ class PembelajaranController extends Controller
         }
 
         if (Cookie::get("{$kategori}_video") === null) {
-            return view("pembelajaran.video", compact("kategori"));
+            return view("pembelajaran.video", compact("kategori", "video_embeded_url"));
         }
 
         $current = Cookie::get("{$kategori}_navigate");

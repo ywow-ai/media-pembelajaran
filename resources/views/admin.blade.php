@@ -11,7 +11,7 @@
                     <table class="table table-hover table-bordered table-sm">
                         <thead class="text-center">
                             <tr>
-                                <th rowspan="2" class="align-middle">#</th>
+                                <th rowspan="2" class="align-middle">No</th>
                                 <th rowspan="2" class="align-middle">Nama</th>
                                 <th colspan="{{ max(1, count($table->soal_ids)) }}">Soal</th>
                             </tr>
