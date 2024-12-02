@@ -20,11 +20,6 @@ class PembelajaranController extends Controller
     public function index($kategori = null)
     {
         $this->check($kategori);
-        $video_embeded_url = [
-            "classical" => "https://www.youtube.com/embed/EhnlVO9zArU?si=wPxth_eEjOs4EBkG",
-            "kelompok" => "https://www.youtube.com/embed/hpiUU-wSsAY?si=NjJljUHsH2y4JaPo",
-            "mandiri" => "https://www.youtube.com/embed/esQeE59kj7U?si=2GsMviQLAMB3cWwz",
-        ][$kategori];
 
         $finish = Cookie::get("{$kategori}_finish");
         if ($finish !== null) {
