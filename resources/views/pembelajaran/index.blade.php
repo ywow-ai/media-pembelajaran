@@ -3,12 +3,14 @@
 @section('content')
     <div class="row">
         <div class="col-12 col-lg-10 mx-auto" style="font-family: 'Times New Roman', Times, serif; font-size: 12px;">
-            <form class="row p-2" action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}" method="post" style="background-color: #a0c4e5;">
+            <form class="row p-2" action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}" method="post"
+                style="background-color: #a0c4e5;">
                 @csrf
                 <input type="hidden" name="this_soal_id" value="{{ $current_soal->id }}">
                 <div class="col-12 col-lg-8 p-2">
                     <div class="card x-card position-relative" style="min-height: 70vh;">
-                        <div class="card-body d-flex flex-column justify-content-between" style="background-color: #ebf6ff;">
+                        <div class="card-body d-flex flex-column justify-content-between"
+                            style="background-color: #ebf6ff;">
                             <div>
                                 <div class="d-flex align-items-center">
                                     <span class="h5 text-primary m-0 me-2">{{ __('SOAL NO') }}</span>
@@ -68,7 +70,7 @@
                 <div class="col-12 col-lg-4 p-2">
                     <div class="card x-card">
                         <div class="card-body px-4">
-                            <span class="h5 text-primary">Navigasi Soal</span>
+                            <span class="h5 text-primary">Navigasi Soal {{ $kategori }}</span>
                             <div class="mb-4"></div>
                             <div class="row" id="soal-nav">
                                 @foreach ($soal as $item)
