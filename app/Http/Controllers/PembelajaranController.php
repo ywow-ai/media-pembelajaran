@@ -183,4 +183,23 @@ class PembelajaranController extends Controller
             return response()->json(["message" => $th->getMessage()], 500);
         }
     }
+
+    public function delete($kategori = null, Request $request)
+    {
+        // dd($kategori);
+        try {
+            $soal_id = DB::table('soal')
+                ->where('kategori_soal', $kategori)
+                ->pluck('id');
+
+            DB::table('jawaban')
+                ->whereIn('soal_id', $soal_id)
+                ->where('nama', $request->nama)
+                ->delete();
+
+            return redirect()->back()->with('success', 'Berhasil menghapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Error. ' . $th->getMessage());
+        }
+    }
 }

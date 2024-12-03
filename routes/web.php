@@ -10,3 +10,4 @@ Route::get('/admin', [AdminController::class, 'index'])->name('admin');
 Route::get('/pembelajaran/{kategori}', [PembelajaranController::class, 'index'])->name('pembelajaran.index');
 Route::post('/pembelajaran/{kategori}/navigate', [PembelajaranController::class, 'navigate'])->name('pembelajaran.navigate');
 Route::post('/pembelajaran/{kategori}/save', [PembelajaranController::class, 'save'])->name('pembelajaran.save');
+Route::post('/pembelajaran/{kategori}/delete', [PembelajaranController::class, 'delete'])->name('pembelajaran.delete');
