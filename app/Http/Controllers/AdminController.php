@@ -23,11 +23,21 @@ class AdminController extends Controller
                     'data' => $item
                         ->groupBy('nama')
                         ->map(function ($item, $nama) use ($soal_ids) {
+                            // dd($item);
                             $result = (object) [];
                             $result->nama = $nama;
                             $result->jawaban = (object) [];
                             foreach ($soal_ids as $i => $id) {
-                                $result->jawaban->{$i} = $item->where('id', $id)->first()?->jawaban;
+                                $raw = $item->where('id', $id)->first();
+                                if (isset($raw)) {
+                                    if ($raw->type === 'PILIHAN GANDA') {
+                                        $result->jawaban->{$i} = ['A', 'B', 'C', 'D', 'E', 'F', 'G'][array_search($raw->jawaban, json_decode($raw->options, true))] ?? null;
+                                    } else {
+                                        $result->jawaban->{$i} = $raw->jawaban;
+                                    }
+                                } else {
+                                    $result->jawaban->{$i} = null;
+                                }
                             }
                             return $result;
                         })
@@ -38,6 +48,4 @@ class AdminController extends Controller
 
         return view('admin', compact('data'))->with('title', 'ADMIN');
     }
-    
-    
 }

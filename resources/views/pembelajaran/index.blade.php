@@ -6,7 +6,7 @@
             <form class="row p-2" action="{{ route('pembelajaran.navigate', ['kategori' => $kategori]) }}" method="post"
                 style="background-color: #a0c4e5;">
                 @csrf
-                <input type="hidden" name="this_soal_id" value="{{ $current_soal->id ?? 0 }}">
+                <input type="hidden" name="this_soal_id" value="{{ $current_soal->id }}">
                 <div class="col-12 col-lg-8 p-2">
                     <div class="card x-card position-relative" style="min-height: 70vh;">
                         <div class="card-body d-flex flex-column justify-content-between"
@@ -18,10 +18,10 @@
                                         style="width: 35px; height: 35px; line-height: 35px;">{{ isset($current_soal) ? $current_soal->key + 1 : '0' }}</span>
                                 </div>
                                 <div class="mt-4">
-                                    <p class="fw-bold">{!! $current_soal->value ?? null !!}</p>
+                                    <p class="fw-bold">{!! $current_soal->value !!}</p>
                                     <ul class="list-unstyled">
-                                        @if (count($current_soal->options ?? []) === 0)
-                                            <textarea class="form-control" name="answer" placeholder="ketik disini..." rows="10">{!! $current_soal->jawaban ?? null !!}</textarea>
+                                        @if (count($current_soal->options) === 0)
+                                            <textarea class="form-control" name="answer" placeholder="ketik disini..." rows="10">{!! $current_soal->jawaban !!}</textarea>
                                         @else
                                             @foreach ($current_soal->options as $i => $opts)
                                                 <li class="mb-2">
@@ -47,21 +47,20 @@
                                     <button type="submit" name="back" value="true"
                                         class="btn btn-primary text-white">Kembali</button>
                                 @else
-                                    <button type="submit" name="navigate" value="{{ (int) $current - 1 }}"
+                                    <button type="submit" name="navigate" value="{{ (int) $has_prev->id }}"
                                         class="btn btn-primary text-white">Sebelumnya</button>
                                 @endif
                                 <label for="check-ragu-ragu" class="btn btn-warning text-white d-flex align-items-center"
                                     role="button">
                                     <input type="checkbox" class="form-check-input x-check m-0" name="ragu_ragu"
-                                        id="check-ragu-ragu"
-                                        {{ (int) ($current_soal->ragu_ragu ?? 0) === 1 ? 'checked' : '' }}>
+                                        id="check-ragu-ragu" {{ (int) $current_soal->ragu_ragu === 1 ? 'checked' : '' }}>
                                     <span class="ms-2">Ragu-ragu</span>
                                 </label>
                                 @if ($has_next === null)
                                     <button type="submit" name="finish" value="true"
                                         class="btn btn-primary text-white">Selesai Ujian</button>
                                 @else
-                                    <button type="submit" name="navigate" value="{{ (int) $current + 1 }}"
+                                    <button type="submit" name="navigate" value="{{ (int) $has_next->id }}"
                                         class="btn btn-primary text-white">Selanjutnya</button>
                                 @endif
                             </div>
@@ -104,7 +103,7 @@
                 };
 
                 const updateColor = () => {
-                    const soal_id = @json($current_soal->id ?? 0);
+                    const soal_id = @json($current_soal->id);
                     const jawaban_null = ($('input[name="answer"][type="radio"]:checked').val() ?? $(
                         'textarea[name="answer"]').val().trim()) === '';
                     const ragu_ragu = $('#check-ragu-ragu').is(':checked');
@@ -127,7 +126,7 @@
                             },
                             body: JSON.stringify({
                                 nama: @json($nama),
-                                soal_id: @json($current_soal->id ?? 0),
+                                soal_id: @json($current_soal->id),
                                 jawaban: $('input[name="answer"][type="radio"]:checked')
                                     .val() ?? $('textarea[name="answer"]').val().trim(),
                                 ragu_ragu: $('#check-ragu-ragu').is(':checked'),
@@ -136,7 +135,7 @@
                     }, throtle * 1000);
                 };
 
-                const soal_id = @json($current_soal->id ?? 0);
+                const soal_id = @json($current_soal->id);
 
                 $('#check-ragu-ragu')
                     .on('change', () => {
